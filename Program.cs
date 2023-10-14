@@ -53,13 +53,13 @@ app.MapPost("/api/employees", (Employees employees, RayJaysPizzaDbContext db) =>
     db.Employees.Add(employees);
     db.SaveChanges();
 
-    return Results.Created($"/employees/{employees.Id}", employees);
+    return Results.Created($"/employees/{employees.EmployeeId}", employees);
 });
 
 //Delete an employee user
 app.MapDelete("/api/employees/{Id}", (int Id, RayJaysPizzaDbContext db) => 
 {
-    Employees employees = db.Employees.FirstOrDefault(emp => emp.Id == Id);
+    Employees employees = db.Employees.FirstOrDefault(emp => emp.EmployeeId == Id);
     
     if (employees == null)
     {
@@ -78,7 +78,7 @@ app.MapGet("/api/employees", (RayJaysPizzaDbContext db) =>
 //Update an employee user
 app.MapPut("/api/employees/{Id}", (int Id, Employees updatedEmployee, RayJaysPizzaDbContext db) =>
 {
-    Employees employee = db.Employees.FirstOrDefault(emp =>emp.Id == Id);
+    Employees employee = db.Employees.FirstOrDefault(emp =>emp.EmployeeId == Id);
 
     if (employee == null)
     {
@@ -122,7 +122,7 @@ app.MapGet("/api/customers", (RayJaysPizzaDbContext db) =>
 //Update a customer
 app.MapPut("/api/customers/{Id}", (int Id, Customers updatedCustomer, RayJaysPizzaDbContext db) =>
 {
-    Customers customers = db.Customers.FirstOrDefault(customers => customers.Id == Id);
+    Customers customers = db.Customers.FirstOrDefault(customers => customers.CustomerId == Id);
 
     if (customers == null)
     {
@@ -139,7 +139,7 @@ app.MapPut("/api/customers/{Id}", (int Id, Customers updatedCustomer, RayJaysPiz
 //Delete a customer
 app.MapDelete("/api/customers/{Id}", (int Id, RayJaysPizzaDbContext db) =>
 {
-    var customer = db.Customers.FirstOrDefault(c => c.Id == Id);
+    var customer = db.Customers.FirstOrDefault(c => c.CustomerId == Id);
     if (customer == null)
     {
         return Results.NotFound(customer);
@@ -149,7 +149,7 @@ app.MapDelete("/api/customers/{Id}", (int Id, RayJaysPizzaDbContext db) =>
 });
 
 //Create items
-app.MapPost("/api/items", (Items item, RayJaysPizzaDbContext db) =>
+app.MapPost("/api/items", (Item item, RayJaysPizzaDbContext db) =>
 {
     db.Items.Add(item);
     db.SaveChanges(); return Results.Ok(item);
@@ -158,7 +158,7 @@ app.MapPost("/api/items", (Items item, RayJaysPizzaDbContext db) =>
 //Delete an item
 app.MapDelete("/api/items/{Id}", (int Id, RayJaysPizzaDbContext db) =>
 {
-    Items items = db.Items.FirstOrDefault(item => item.Id == Id);
+    Item items = db.Items.FirstOrDefault(item => item.ItemId == Id);
     if (items == null)
     {
         return Results.NotFound();
@@ -174,9 +174,9 @@ app.MapGet("/api/items", (RayJaysPizzaDbContext db) =>
 });
 
 //Update an item
-app.MapPut("/api/items/{Id}", (int Id, Items itemsUpdated, RayJaysPizzaDbContext db) =>
+app.MapPut("/api/items/{Id}", (int Id, Item itemsUpdated, RayJaysPizzaDbContext db) =>
 {
-    Items items = db.Items.FirstOrDefault(i => i.Id == Id);
+    Item items = db.Items.FirstOrDefault(i => i.ItemId == Id);
     if (items == null)
     {
         return Results.NotFound();
@@ -198,7 +198,7 @@ app.MapPost("/api/paymenttypes", (PaymentType paymentType, RayJaysPizzaDbContext
 //Delete a payment type
 app.MapDelete("/api/paymenttypes/{Id}", (int Id, RayJaysPizzaDbContext db) =>
 {
-    PaymentType paymentType = db.PaymentTypes.FirstOrDefault(pt  => pt.Id == Id);
+    PaymentType paymentType = db.PaymentTypes.FirstOrDefault(pt  => pt.PaymentTypeId == Id);
     if(paymentType == null)
     {
         return Results.NotFound();
@@ -228,7 +228,7 @@ app.MapPost("/api/status", (Status status, RayJaysPizzaDbContext db) =>
 
 app.MapPut("/api/status/{Id}", (int Id, Status updatedStatus, RayJaysPizzaDbContext db) =>
 {
-    Status status = db.Status.FirstOrDefault(st => st.Id == Id);
+    Status status = db.Status.FirstOrDefault(st => st.StatusId == Id);
     if(status == null)
     {
         return Results.NotFound();
@@ -246,17 +246,18 @@ app.MapPost("/api/orders", (Orders order, RayJaysPizzaDbContext db) =>
     db.SaveChanges(); return Results.Ok();
 });
 
-//Create order items
-app.MapPost("/api/orderitems/{Id}", (OrderItems orderItems, RayJaysPizzaDbContext db) =>
+
+
+//Create an order
+app.MapGet("/api/orders", (RayJaysPizzaDbContext db) =>
 {
-    db.OrderItems.Add(orderItems);
-    db.SaveChanges(); return Results.Ok();
+   return db.Orders.ToList();
 });
 
 //Delete an order
 app.MapDelete("/api/orders/{Id}", (int Id, RayJaysPizzaDbContext db) =>
 {
-    var order = db.Orders.FirstOrDefault(o => o.Id == Id);
+    var order = db.Orders.FirstOrDefault(o => o.OrderId == Id);
     if(order == null)
     {
         return Results.NotFound();

@@ -1,8 +1,11 @@
-﻿namespace RayJaysPizza.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RayJaysPizza.Models
 {
     public class Ratings
     {
-        public int Id { get; set; }
+        [Key]
+        public int RatingId { get; set; }
         public int StarRating { get; set; }
     }
 }

@@ -1,8 +1,11 @@
-﻿namespace RayJaysPizza.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RayJaysPizza.Models
 {
     public class Status
     {
-        public int Id { get; set; }
+        [Key]
+        public int StatusId { get; set; }
         public string OrderStatus { get; set; }
     }
 }
